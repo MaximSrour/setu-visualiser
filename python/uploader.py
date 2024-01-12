@@ -17,7 +17,7 @@ connection = MySQLdb.connect(
     }
 )
 
-with open('data.csv', 'r') as file:
+with open('aspectDefs.csv', 'r') as file:
     csv_data = csv.reader(file)
     
     # Extract column names from the first row (header)
@@ -26,7 +26,7 @@ with open('data.csv', 'r') as file:
     columns_formatted = ', '.join(columns)
     
     # Prepare SQL statement
-    sql = f"INSERT INTO `setu-visualiser_data` ({columns_formatted}) VALUES ({placeholders})"
+    sql = f"INSERT INTO `setu-visualiser_aspect_definitions` ({columns_formatted}) VALUES ({placeholders})"
 
     # Convert the rest of the CSV lines into a list of tuples
     data_tuples = list(map(tuple, csv_data))

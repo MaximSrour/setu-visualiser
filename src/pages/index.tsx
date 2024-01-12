@@ -1,6 +1,8 @@
 import Head from "next/head";
 
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+
 
 import Example from "~/components/Example";
 
@@ -24,7 +26,14 @@ export default function Home() {
     campus: "CL",
     aspectType: "F"
   });
-  
+
+  const aspectOverTime = api.aspects.getAspectOverTime.useQuery({
+    unit: "FIT1045",
+    campus: "CL",
+    aspectType: "U",
+    aspect: 8,
+  });
+
   const RadarUniAspects = (
     <RadarChart width={300} height={300} data={uniAspects.data ? uniAspects.data : []} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
       <Radar type="monotone" dataKey="median" fill="#8884d8" />
@@ -44,6 +53,27 @@ export default function Home() {
       <Tooltip />
     </RadarChart>
   );
+
+  const AspectOverTime = (
+    <LineChart
+      width={600}
+      height={300}
+      data={aspectOverTime.data ? aspectOverTime.data : []}
+      margin={{
+        top: 5,
+        right: 30,
+        left: 20,
+        bottom: 5,
+      }}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="semester" />
+      <YAxis domain={[0, 5]} />
+      <Tooltip />
+      <Legend />
+      <Line type="monotone" dataKey="median" stroke="#8884d8" activeDot={{ r: 8 }} />
+    </LineChart>
+  )
 
   return (
     <>
@@ -67,6 +97,8 @@ export default function Home() {
             {RadarUniAspects}
             {RadarFacultyAspects}
           </div>
+
+          {AspectOverTime}
 
           <Example />
         </div>

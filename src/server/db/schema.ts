@@ -1,15 +1,17 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
+import { relations } from "drizzle-orm";
 import {
   mysqlTableCreator,
   serial,
-  real,
+  double,
   smallint,
   varchar,
   int,
   index,
-  mysqlEnum
+  mysqlEnum,
+  primaryKey
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -49,6 +51,24 @@ export const mysqlTable = mysqlTableCreator((name) => `setu-visualiser_${name}`)
 
 // export const aspectTypeEnum = mysqlEnum("aspect_type", ["university", "faculty"]);
 
+export const aspectDefinitions = mysqlTable(
+  "aspect_definitions",
+  {
+    aspectType: varchar("aspect_type", { length: 2 }),
+    aspect: smallint("aspect"),
+    description: varchar("description", { length: 255 }),
+  }, (table) => {
+    return {
+      pk: primaryKey({ columns: [table.aspectType, table.aspect] }),
+      //pkWithCustomName: primaryKey({ name: 'id', columns: [table.aspectType, table.aspect] }),
+    };
+  }
+);
+
+export const aspectDefinitionsRelations = relations(aspectDefinitions, ({ many }) => ({
+  data: many(data),
+}));
+
 export const data = mysqlTable(
   "data",
   {
@@ -64,10 +84,14 @@ export const data = mysqlTable(
     neutral: smallint("neutral"),
     disagree: smallint("disagree"),
     strongDisagree: smallint("strong_disagree"),
-    mean: real("mean"),
-    median: real("median"),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.unit),
-  })
+    mean: double("mean"),
+    median: double("median"),
+  }
 );
+
+export const dataRelations = relations(data, ({ one }) => ({
+  aspectDefinition: one(aspectDefinitions, {
+    fields: [data.aspectType, data.aspect],
+    references: [aspectDefinitions.aspectType, aspectDefinitions.aspect],
+  }),
+}));

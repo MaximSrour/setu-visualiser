@@ -17,6 +17,10 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  // Workaround necessary to side-step module import bug
+  // @see https://github.com/vercel/geist-font/issues/13
+  transpilePackages: ["geist"],
 };
 
 export default config;

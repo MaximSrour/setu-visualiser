@@ -6,7 +6,6 @@ import type { RouterOutputs } from "~/utils/api";
 type IOffering = RouterOutputs["aspects"]["getOffering"][number];
 interface IOfferingsAspectRadarChartProps {
 	data?: IOffering[] | null;
-	title: string;
 }
 
 // const getIntroOfPage = (label: string | number) => {

@@ -53,7 +53,9 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-2 w-full ">
-			<h3 className="text-lg text-center">{title}</h3>
+			<div className="flex items-center justify-center min-h-14 align-middle">
+				<h3 className="text-lg text-center">{title}</h3>
+			</div>
 
 			<ResponsiveContainer width="100%" height={300}>
 				<LineChart
@@ -67,7 +69,7 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 						bottom: 5,
 					}}
 				>
-					<CartesianGrid />
+					<CartesianGrid horizontal={false} strokeDasharray="1 4" />
 					<XAxis dataKey="semester" />
 					<YAxis domain={domain} hide />
 					<Tooltip content={CustomTooltip} />
@@ -82,7 +84,7 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 							y1={refArea.min >= domain[0] ? refArea.min : domain[0]}
 							y2={refArea.max <= domain[1] ? refArea.max : domain[1]}
 							stroke={refArea.color}
-							strokeOpacity={0.3}
+							strokeOpacity={1.0}
 							fill={refArea.color}
 							opacity={opacity}
 						/>

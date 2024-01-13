@@ -1,19 +1,8 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { data } from "~/server/db/schema";
-
-import { and, eq } from 'drizzle-orm'
 
 export const aspectRouter = createTRPCRouter({
-  getFirst: publicProcedure.query(({ ctx }) => {
-    return ctx.db.query.data.findFirst();
-  }),
-
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.query.data.findMany();
-  }),
-
   getOffering: publicProcedure
   .input(z.object({
     unit: z.string(),

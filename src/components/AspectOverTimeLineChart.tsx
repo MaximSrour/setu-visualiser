@@ -1,5 +1,6 @@
 import React from 'react';
-import { Line, XAxis, YAxis, CartesianGrid, Tooltip, TooltipProps, Legend, ComposedChart, ReferenceArea } from 'recharts';
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea } from 'recharts';
+import type { TooltipProps } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
 
 interface IRefArea {
@@ -23,8 +24,8 @@ interface IAspectOverTimeLineChartProps {
 	data?: IOffering[] | null;
 }
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
-	if (active && payload && payload.length) {
+const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+	if (active && payload?.length) {
 		return (
 			<div className="bg-slate-800 text-white rounded-md p-3">
 				<p className="">{`${payload[0]?.value}`}</p>
@@ -42,7 +43,7 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 		return true;
 	});
 
-	const domain = props.domain || [2.5, 5];
+	const domain = props.domain ?? [2.5, 5];
 
 	const opacity = 0.4;
 
@@ -51,16 +52,23 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 	const title = filteredData ? filteredData[0]?.aspectDefinition?.description : "Loading...";
 
 	return (
-		<div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-			<h3>{title}</h3>
-			<ComposedChart
+		<div className="flex flex-col items-center justify-center gap-2 ">
+			<h3 className="text-lg">{title}</h3>
+
+			<LineChart
 				width={600}
 				height={300}
-				data={filteredData || []}
+				data={filteredData ?? []}
+				margin={{
+					top: 5,
+					right: 5,
+					left: 5,
+					bottom: 5,
+				}}
 			>
 				<CartesianGrid />
 				<XAxis dataKey="semester" />
-				<YAxis domain={domain} />
+				<YAxis domain={domain} hide />
 				<Tooltip content={CustomTooltip} />
 				<Legend />
 				<Line type="monotone" dataKey="median" stroke="#8884d8" activeDot={{ r: 8 }} />
@@ -78,7 +86,7 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 						opacity={opacity}
 					/>
 				))}
-			</ComposedChart>
+			</LineChart>
 		</div>
 	);
 }

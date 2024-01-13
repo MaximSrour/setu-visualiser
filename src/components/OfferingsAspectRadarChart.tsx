@@ -1,5 +1,6 @@
 import React from 'react';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip, TooltipProps } from 'recharts';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts';
+import type { TooltipProps } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
 
 type IOffering = RouterOutputs["aspects"]["getOffering"][number];
@@ -8,22 +9,22 @@ interface IOfferingsAspectRadarChartProps {
 	title: string;
 }
 
-const getIntroOfPage = (label: string | number) => {
-	switch (label) {
-		case 1:
-			return "Text 1";
-			break;
-		case 2:
-			return "Text 2";
-			break;
-		default:
-			return "Text 3";
-			break;
-	}
-};
+// const getIntroOfPage = (label: string | number) => {
+// 	switch (label) {
+// 		case 1:
+// 			return "Text 1";
+// 			break;
+// 		case 2:
+// 			return "Text 2";
+// 			break;
+// 		default:
+// 			return "Text 3";
+// 			break;
+// 	}
+// };
 
 const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
-	if (active && payload && payload.length) {
+	if (active && payload?.length) {
 		return (
 			<div className="bg-slate-800 text-white rounded-md p-3">
 				<p className="">{`Aspect ${label}: ${payload[0]?.value}`}</p>
@@ -45,7 +46,7 @@ export default function OfferingsAspectRadarChart(props: IOfferingsAspectRadarCh
 			<Radar type="monotone" dataKey="median" fill="#8884d8" />
 			<PolarGrid />
 			<PolarAngleAxis dataKey="aspect" />
-			<PolarRadiusAxis domain={[0, 5]} />
+			<PolarRadiusAxis domain={[0, 5]} hide />
 			<Tooltip content={CustomTooltip} />
 		</RadarChart>
 	);

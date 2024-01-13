@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea } from 'recharts';
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea, ResponsiveContainer } from 'recharts';
 import type { TooltipProps } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
 
@@ -52,41 +52,43 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 	const title = filteredData ? filteredData[0]?.aspectDefinition?.description : "Loading...";
 
 	return (
-		<div className="flex flex-col items-center justify-center gap-2 ">
-			<h3 className="text-lg">{title}</h3>
+		<div className="flex flex-col items-center justify-center gap-2 w-full ">
+			<h3 className="text-lg text-center">{title}</h3>
 
-			<LineChart
-				width={600}
-				height={300}
-				data={filteredData ?? []}
-				margin={{
-					top: 5,
-					right: 5,
-					left: 5,
-					bottom: 5,
-				}}
-			>
-				<CartesianGrid />
-				<XAxis dataKey="semester" />
-				<YAxis domain={domain} hide />
-				<Tooltip content={CustomTooltip} />
-				<Legend />
-				<Line type="monotone" dataKey="median" stroke="#8884d8" activeDot={{ r: 8 }} />
+			<ResponsiveContainer width="100%" height={300}>
+				<LineChart
+					width={600}
+					height={300}
+					data={filteredData ?? []}
+					margin={{
+						top: 5,
+						right: 5,
+						left: 5,
+						bottom: 5,
+					}}
+				>
+					<CartesianGrid />
+					<XAxis dataKey="semester" />
+					<YAxis domain={domain} hide />
+					<Tooltip content={CustomTooltip} />
+					<Legend />
+					<Line type="monotone" dataKey="median" stroke="#8884d8" activeDot={{ r: 8 }} />
 
-				{refAreas.map((refArea, key) => (
-					<ReferenceArea
-						key={key}
-						x1={0}
-						x2={dataCount}
-						y1={refArea.min >= domain[0] ? refArea.min : domain[0]}
-						y2={refArea.max <= domain[1] ? refArea.max : domain[1]}
-						stroke={refArea.color}
-						strokeOpacity={0.3}
-						fill={refArea.color}
-						opacity={opacity}
-					/>
-				))}
-			</LineChart>
+					{refAreas.map((refArea, key) => (
+						<ReferenceArea
+							key={key}
+							x1={0}
+							x2={dataCount}
+							y1={refArea.min >= domain[0] ? refArea.min : domain[0]}
+							y2={refArea.max <= domain[1] ? refArea.max : domain[1]}
+							stroke={refArea.color}
+							strokeOpacity={0.3}
+							fill={refArea.color}
+							opacity={opacity}
+						/>
+					))}
+				</LineChart>
+			</ResponsiveContainer>
 		</div>
 	);
 }

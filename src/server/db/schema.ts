@@ -8,9 +8,6 @@ import {
   double,
   smallint,
   varchar,
-  int,
-  index,
-  mysqlEnum,
   primaryKey
 } from "drizzle-orm/mysql-core";
 

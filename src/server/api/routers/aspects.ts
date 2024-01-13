@@ -61,4 +61,25 @@ export const aspectRouter = createTRPCRouter({
       },
     });
   }),
+
+  getAspectsOverTime: publicProcedure
+  .input(z.object({
+    unit: z.string(),
+    campus: z.string(),
+  }))
+  .query(async ({ ctx, input }) => {
+    return await ctx.db.query.data.findMany({
+      where: ((data, { and, eq }) => and(
+        eq(data.unit, input.unit),
+        eq(data.campus, input.campus))
+      ),
+      orderBy: (data, { asc }) => [
+        asc(data.year),
+        asc(data.semester)
+      ],
+      with: {
+        aspectDefinition: true,
+      },
+    });
+  }),
 });

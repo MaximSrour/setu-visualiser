@@ -2,6 +2,7 @@ import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts';
 import type { TooltipProps } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
+import CustomTooltip, { refAreas, CustomizedDot } from "./CustomTooltip";
 
 type IOffering = RouterOutputs["aspects"]["getOffering"][number];
 interface IOfferingsAspectRadarChartProps {
@@ -22,19 +23,6 @@ interface IOfferingsAspectRadarChartProps {
 // 	}
 // };
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
-	if (active && payload?.length) {
-		return (
-			<div className="bg-slate-800 text-white rounded-md p-3">
-				<p className="">{`Aspect ${label}: ${payload[0]?.value}`}</p>
-				{/* <p className="">{getIntroOfPage(label)}</p> */}
-			</div>
-		);
-	}
-
-	return null;
-};
-
 export default function OfferingsAspectRadarChart(props: IOfferingsAspectRadarChartProps) {
 	return (
 		<RadarChart
@@ -46,7 +34,7 @@ export default function OfferingsAspectRadarChart(props: IOfferingsAspectRadarCh
 			<PolarGrid />
 			<PolarAngleAxis dataKey="aspect" />
 			<PolarRadiusAxis domain={[0, 5]} hide />
-			<Tooltip content={CustomTooltip} />
+			<Tooltip content={<CustomTooltip />} />
 		</RadarChart>
 	);
 }

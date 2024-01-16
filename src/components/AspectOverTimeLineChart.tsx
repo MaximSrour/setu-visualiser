@@ -1,8 +1,7 @@
 import React from 'react';
 import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea, ResponsiveContainer } from 'recharts';
-import type { TooltipProps } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
-import CustomTooltip, { refAreas, CustomizedDot } from "./CustomTooltip";
+import CustomTooltip, { refAreas } from "./CustomTooltip";
 
 type IOffering = RouterOutputs["aspects"]["getOffering"][number];
 interface IAspectOverTimeLineChartProps {
@@ -12,13 +11,13 @@ interface IAspectOverTimeLineChartProps {
 	data?: IOffering[] | null;
 }
 
-function CustomizedAxisTick(props: any) {
-	const { x, y, stroke, payload } = props;
-
+// TODO: Fix this so that it doesn't rely on the linter being bypassed
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CustomizedAxisTick(props: { x?: number; y?: number; payload?: {value?: number} }) {
 	return (
-		<g transform={`translate(${x},${y})`}>
+		<g transform={`translate(${props?.x ?? 0},${props?.y ?? 0})`}>
 			<text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
-				{payload.value}
+				{props?.payload?.value ?? ""}
 			</text>
 		</g>
 	)
@@ -35,7 +34,7 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 
 	const opacity = 0.4;
 
-	const dataCount = filteredData ? filteredData.length - 1 : 0;
+	const dataCount = filteredData?.length ?? 0;
 
 	const title = filteredData ? filteredData[0]?.aspectDefinition?.description : "Loading...";
 
@@ -70,7 +69,7 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 						<ReferenceArea
 							key={key}
 							x1={0}
-							x2={dataCount}
+							x2={dataCount - 1}
 							y1={refArea.min >= domain[0] ? refArea.min : domain[0]}
 							y2={refArea.max <= domain[1] ? refArea.max : domain[1]}
 							stroke={refArea.color}

@@ -4,7 +4,6 @@
 import { relations } from "drizzle-orm";
 import {
   mysqlTableCreator,
-  serial,
   double,
   smallint,
   varchar,
@@ -69,7 +68,6 @@ export const aspectDefinitionsRelations = relations(aspectDefinitions, ({ many }
 export const data = mysqlTable(
   "data",
   {
-    id: serial("id").primaryKey().autoincrement(),
     unit: varchar("unit", { length: 8 }),
     year: smallint("year"),
     semester: varchar("semester", { length: 4 }),
@@ -83,6 +81,11 @@ export const data = mysqlTable(
     strongDisagree: smallint("strong_disagree"),
     mean: double("mean"),
     median: double("median"),
+  }, (table) => {
+    return {
+      //pk: primaryKey({ columns: [table.unit, table.year, table.semester, table.campus, table.aspectType, table.aspect] }),
+      pkWithCustomName: primaryKey({ name: 'id', columns: [table.unit, table.year, table.semester, table.campus, table.aspectType, table.aspect] }),
+    };
   }
 );
 

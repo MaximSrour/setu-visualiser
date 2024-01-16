@@ -1,8 +1,7 @@
 import React from 'react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts';
-import type { TooltipProps } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
-import CustomTooltip, { refAreas, CustomizedDot } from "./CustomTooltip";
+import CustomTooltip from "./CustomTooltip";
 
 type IOffering = RouterOutputs["aspects"]["getOffering"][number];
 interface IOfferingsAspectRadarChartProps {

@@ -3,6 +3,8 @@ import Head from "next/head";
 import OfferingsAspectRadarChart from "~/components/OfferingsAspectRadarChart";
 import AspectOverTimeLineChart from "~/components/AspectOverTimeLineChart";
 
+import ModeToggle from "~/components/ui/theme-toggle";
+
 import { api } from "~/utils/api";
 
 export default function Home() {
@@ -35,11 +37,13 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white">
+			<main className="flex min-h-screen flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-					<span className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+					<span className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
 						SETU<span className="text-[hsl(280,100%,70%)]">.</span>fyi
 					</span>
+
+					<ModeToggle />
 
 					<h1 className="text-3xl text-center">FIT1045 results</h1>
 

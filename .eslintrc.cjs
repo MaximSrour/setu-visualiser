@@ -31,6 +31,8 @@ const config = {
         checksVoidReturn: { attributes: false },
       },
     ],
+
+	"@typescript-eslint/no-empty-interface": "off",
   },
 };
 

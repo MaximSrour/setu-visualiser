@@ -6,12 +6,21 @@ import { GeistSans } from "geist/font/sans";
 
 import "~/styles/globals.css";
 
+import { ThemeProvider } from "~/components/themeProvider"
+
 const MyApp: AppType = ({ Component, pageProps }) => {
-  return (
-    <div className={GeistSans.className}>
-      <Component {...pageProps} />
-    </div>
-  );
+	return (
+		<ThemeProvider 
+			attribute="class"
+			defaultTheme="system"
+			enableSystem
+			disableTransitionOnChange
+		>
+			<div className={GeistSans.className}>
+				<Component {...pageProps} />
+			</div>
+		</ThemeProvider>
+	);
 };
 
 export default api.withTRPC(MyApp);

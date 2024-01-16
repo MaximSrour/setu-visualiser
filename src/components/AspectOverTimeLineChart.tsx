@@ -2,19 +2,7 @@ import React from 'react';
 import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea, ResponsiveContainer } from 'recharts';
 import type { TooltipProps } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
-
-interface IRefArea {
-	min: number;
-	max: number;
-	color: string;
-}
-
-const refAreas: IRefArea[] = [
-	{ min: 0, max: 3, color: "red" },
-	{ min: 3, max: 3.8, color: "yellow" },
-	{ min: 3.8, max: 4.8, color: "green" },
-	{ min: 4.8, max: 5, color: "purple" },
-];
+import CustomTooltip, { refAreas, CustomizedDot } from "./CustomTooltip";
 
 type IOffering = RouterOutputs["aspects"]["getOffering"][number];
 interface IAspectOverTimeLineChartProps {
@@ -24,17 +12,17 @@ interface IAspectOverTimeLineChartProps {
 	data?: IOffering[] | null;
 }
 
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
-	if (active && payload?.length) {
-		return (
-			<div className="bg-slate-800 text-white rounded-md p-3">
-				<p className="">{`${payload[0]?.value}`}</p>
-			</div>
-		);
-	}
+function CustomizedAxisTick(props: any) {
+	const { x, y, stroke, payload } = props;
 
-	return null;
-};
+	return (
+		<g transform={`translate(${x},${y})`}>
+			<text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
+				{payload.value}
+			</text>
+		</g>
+	)
+}
 
 export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartProps) {
 	const filteredData = props.data?.filter((d) => {
@@ -50,6 +38,8 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 	const dataCount = filteredData ? filteredData.length - 1 : 0;
 
 	const title = filteredData ? filteredData[0]?.aspectDefinition?.description : "Loading...";
+
+	// const xticks = filteredData?.map((d) => `${d.year} - ${d.semester}`) ?? [];
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-2 w-full ">
@@ -70,11 +60,11 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 					}}
 				>
 					<CartesianGrid horizontal={false} strokeDasharray="1 4" />
-					<XAxis dataKey="semester" />
+					<XAxis dataKey="semester" tick={<CustomizedAxisTick />} />
 					<YAxis domain={domain} hide />
-					<Tooltip content={CustomTooltip} />
+					<Tooltip content={<CustomTooltip />} />
 					<Legend />
-					<Line type="monotone" dataKey="median" stroke="#8884d8" activeDot={{ r: 8 }} />
+					<Line type="monotone" dataKey="median" stroke="#8884d8" dot={true} />
 
 					{refAreas.map((refArea, key) => (
 						<ReferenceArea

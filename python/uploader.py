@@ -4,6 +4,18 @@ import os
 import MySQLdb
 import csv
 
+class dbTable:
+	def __init__(self, targetTable, source):
+		self.targetTable = targetTable
+		self.source = source
+
+tables = {
+	"data": dbTable("setu-visualiser_data", "data.csv"),
+	"aspectDefinitions": dbTable("setu-visualiser_aspect_definitions", "aspectDefs.csv"),
+}
+
+TABLE = tables["data"]
+
 # Establish connection
 connection = MySQLdb.connect(
     host=os.getenv("DB_HOST"),
@@ -17,7 +29,7 @@ connection = MySQLdb.connect(
     }
 )
 
-with open('aspectDefs.csv', 'r') as file:
+with open(TABLE.source, 'r') as file:
     csv_data = csv.reader(file)
     
     # Extract column names from the first row (header)
@@ -26,7 +38,7 @@ with open('aspectDefs.csv', 'r') as file:
     columns_formatted = ', '.join(columns)
     
     # Prepare SQL statement
-    sql = f"INSERT INTO `setu-visualiser_aspect_definitions` ({columns_formatted}) VALUES ({placeholders})"
+    sql = f"INSERT INTO `{TABLE.targetTable}` ({columns_formatted}) VALUES ({placeholders})"
 
     # Convert the rest of the CSV lines into a list of tuples
     data_tuples = list(map(tuple, csv_data))
@@ -34,7 +46,11 @@ with open('aspectDefs.csv', 'r') as file:
 # Cursor to execute queries
 cursor = connection.cursor()
 
-cursor.executemany(sql, data_tuples)
+for data_tuple in data_tuples:
+	try:
+		cursor.execute(sql, data_tuple)
+	except Exception as e:
+		pass
 
 # Close cursor and connection
 cursor.close()

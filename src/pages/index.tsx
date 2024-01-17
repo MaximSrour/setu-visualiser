@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useState } from "react";
 
 import OfferingsAspectRadarChart from "~/components/OfferingsAspectRadarChart";
 import AspectOverTimeLineChart from "~/components/AspectOverTimeLineChart";
@@ -7,9 +8,24 @@ import ModeToggle from "~/components/ui/theme-toggle";
 
 import { api } from "~/utils/api";
 
+import { Combobox } from "~/components/ui/combobox";
+
 export default function Home() {
+	const [selectedUnit, setSelectedUnit] = useState("");
+
+	const units = [
+		{
+			value: "fit1045",
+			label: "FIT1045"
+		},
+		{
+			value: "fit5057",
+			label: "FIT5057"
+		}
+	]
+
 	const uniAspects = api.aspects.getOffering.useQuery({
-		unit: "FIT1045",
+		unit: selectedUnit,
 		year: 2023,
 		semester: "S2",
 		campus: "CL",
@@ -17,7 +33,7 @@ export default function Home() {
 	});
 
 	const facultyAspects = api.aspects.getOffering.useQuery({
-		unit: "FIT1045",
+		unit: selectedUnit,
 		year: 2023,
 		semester: "S2",
 		campus: "CL",
@@ -25,7 +41,7 @@ export default function Home() {
 	});
 
 	const aspectOverTime = api.aspects.getAspectsOverTime.useQuery({
-		unit: "FIT1045",
+		unit: selectedUnit,
 		campus: "CL",
 	});
 
@@ -45,7 +61,9 @@ export default function Home() {
 
 					<ModeToggle />
 
-					<h1 className="text-3xl text-center">FIT1045 results</h1>
+					<Combobox defaultValue={selectedUnit} dataType="unit" data={units} callback={setSelectedUnit} />
+
+					<h1 className="text-3xl text-center">{selectedUnit} results</h1>
 
 					<div className="flex flex-row flex-wrap items-center justify-center">
 						<OfferingsAspectRadarChart data={uniAspects.data} />

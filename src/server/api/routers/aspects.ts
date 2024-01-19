@@ -12,13 +12,13 @@ export const aspectRouter = createTRPCRouter({
     aspectType: z.string(),
   }))
   .query(async ({ ctx, input }) => {
-    return await ctx.db.query.data.findMany({
-      where: ((data, { and, eq }) => and(
-        eq(data.unit, input.unit),
-        eq(data.year, input.year),
-        eq(data.semester, input.semester),
-        eq(data.campus, input.campus),
-        eq(data.aspectType, input.aspectType))
+    return await ctx.db.query.aspectData.findMany({
+      where: ((aspectData, { and, eq }) => and(
+        eq(aspectData.unit, input.unit),
+        eq(aspectData.year, input.year),
+        eq(aspectData.semester, input.semester),
+        eq(aspectData.campus, input.campus),
+        eq(aspectData.aspectType, input.aspectType))
       ),
       with: {
         aspectDefinition: true,
@@ -34,16 +34,16 @@ export const aspectRouter = createTRPCRouter({
     aspect: z.number(),
   }))
   .query(async ({ ctx, input }) => {
-    return await ctx.db.query.data.findMany({
-      where: ((data, { and, eq }) => and(
-        eq(data.unit, input.unit),
-        eq(data.campus, input.campus),
-        eq(data.aspectType, input.aspectType),
-        eq(data.aspect, input.aspect))
+    return await ctx.db.query.aspectData.findMany({
+      where: ((aspectData, { and, eq }) => and(
+        eq(aspectData.unit, input.unit),
+        eq(aspectData.campus, input.campus),
+        eq(aspectData.aspectType, input.aspectType),
+        eq(aspectData.aspect, input.aspect))
       ),
-      orderBy: (data, { asc }) => [
-        asc(data.year),
-        asc(data.semester)
+      orderBy: (aspectData, { asc }) => [
+        asc(aspectData.year),
+        asc(aspectData.semester)
       ],
       with: {
         aspectDefinition: true,
@@ -57,14 +57,14 @@ export const aspectRouter = createTRPCRouter({
     campus: z.string(),
   }))
   .query(async ({ ctx, input }) => {
-    return await ctx.db.query.data.findMany({
-      where: ((data, { and, eq }) => and(
-        eq(data.unit, input.unit),
-        eq(data.campus, input.campus))
+    return await ctx.db.query.aspectData.findMany({
+      where: ((aspectData, { and, eq }) => and(
+        eq(aspectData.unit, input.unit),
+        eq(aspectData.campus, input.campus))
       ),
-      orderBy: (data, { asc }) => [
-        asc(data.year),
-        asc(data.semester)
+      orderBy: (aspectData, { asc }) => [
+        asc(aspectData.year),
+        asc(aspectData.semester)
       ],
       with: {
         aspectDefinition: true,

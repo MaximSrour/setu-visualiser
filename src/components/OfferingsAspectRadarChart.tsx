@@ -8,20 +8,6 @@ interface IOfferingsAspectRadarChartProps {
 	data?: IOffering[] | null;
 }
 
-// const getIntroOfPage = (label: string | number) => {
-// 	switch (label) {
-// 		case 1:
-// 			return "Text 1";
-// 			break;
-// 		case 2:
-// 			return "Text 2";
-// 			break;
-// 		default:
-// 			return "Text 3";
-// 			break;
-// 	}
-// };
-
 export default function OfferingsAspectRadarChart(props: IOfferingsAspectRadarChartProps) {
 	return (
 		<RadarChart

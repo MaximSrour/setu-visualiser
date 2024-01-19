@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea, ResponsiveContainer } from 'recharts';
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea, ResponsiveContainer, Label } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
 import CustomTooltip, { refAreas } from "./CustomTooltip";
 
@@ -38,6 +38,8 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 
 	const title = filteredData ? filteredData[0]?.aspectDefinition?.description : "Loading...";
 
+	const isEnoughData = dataCount >= 3;
+
 	// const xticks = filteredData?.map((d) => `${d.year} - ${d.semester}`) ?? [];
 
 	return (
@@ -63,7 +65,10 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 					<YAxis domain={domain} hide />
 					<Tooltip content={<CustomTooltip />} />
 					<Legend />
-					<Line type="monotone" dataKey="median" stroke="#8884d8" dot={true} />
+					
+					{!isEnoughData && <Label value="Not enough data" position="center" />}
+					{isEnoughData && <Line type="monotone" dataKey="median" stroke="#8884d8" dot={true} />}
+					{/* <Line type="monotone" dataKey="mean" stroke="#d88488" dot={true} /> */}
 
 					{refAreas.map((refArea, key) => (
 						<ReferenceArea
@@ -76,6 +81,7 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 							strokeOpacity={1.0}
 							fill={refArea.color}
 							opacity={opacity}
+							ifOverflow="hidden"
 						/>
 					))}
 				</LineChart>

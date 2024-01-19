@@ -3,11 +3,11 @@
 
 import { relations } from "drizzle-orm";
 import {
-  mysqlTableCreator,
-  double,
-  smallint,
-  varchar,
-  primaryKey
+	mysqlTableCreator,
+	double,
+	smallint,
+	varchar,
+	primaryKey
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -18,80 +18,73 @@ import {
  */
 export const mysqlTable = mysqlTableCreator((name) => `setu-visualiser_${name}`);
 
-// export const offerings = mysqlTable(
-//   "offerings",
-//   {
-//     id: int("id").primaryKey().autoincrement(),
-//     unit: varchar("unit", { length: 8 }),
-//     year: smallint("year"),
-//     semester: varchar("semester", { length: 4 }),
-//     campus: varchar("campus", { length: 2 }),
-//   },
-// );
+export const offerings = mysqlTable(
+	"offerings",
+	{
+		unit: varchar("unit", { length: 8 }),
+		year: smallint("year"),
+		semester: varchar("semester", { length: 4 }),
+		campus: varchar("campus", { length: 2 }),
+		title: varchar("title", { length: 255 }),
+		ceEmail: varchar("ce_email", { length: 127 }),
+	}, (table) => {
+		return {
+			pk: primaryKey({ name: 'id', columns: [table.unit, table.year, table.semester, table.campus] }),
+		};
+	}
+);
 
-// export const aspects = mysqlTable(
-//   "aspects",
-//   {
-//     id: serial("id").primaryKey().autoincrement(),
-//     // offeringId: int("offering_id").notNull().references(() => offerings.id),
-//     aspect: varchar("aspect", { length: 4 }),
-//     strongAgree: smallint("strong_agree"),
-//     agree: smallint("agree"),
-//     neutral: smallint("neutral"),
-//     disagree: smallint("disagree"),
-//     strongDisagree: smallint("strong_disagree"),
-//     mean: real("mean"),
-//     median: real("median"),
-//   },
-// );
+export const offeringsRelations = relations(offerings, ({ many }) => ({
+	aspectData: many(aspectData),
+}));
 
-// export const aspectTypeEnum = mysqlEnum("aspect_type", ["university", "faculty"]);
+export const aspectData = mysqlTable(
+	"aspect_data",
+	{
+		unit: varchar("unit", { length: 8 }),
+		year: smallint("year"),
+		semester: varchar("semester", { length: 4 }),
+		campus: varchar("campus", { length: 2 }),
+		aspectType: varchar("aspect_type", { length: 2 }),
+		aspect: smallint("aspect"),
+		strongAgree: smallint("strong_agree"),
+		agree: smallint("agree"),
+		neutral: smallint("neutral"),
+		disagree: smallint("disagree"),
+		strongDisagree: smallint("strong_disagree"),
+		mean: double("mean"),
+		median: double("median"),
+	}, (table) => {
+		return {
+			pk: primaryKey({ name: 'id', columns: [table.unit, table.year, table.semester, table.campus, table.aspectType, table.aspect] }),
+		};
+	}
+);
+
+export const aspectDataRelations = relations(aspectData, ({ one }) => ({
+	offering: one(offerings, {
+		fields: [aspectData.unit, aspectData.year, aspectData.semester, aspectData.campus],
+		references: [offerings.unit, offerings.year, offerings.semester, offerings.campus],
+	}),
+	aspectDefinition: one(aspectDefinitions, {
+		fields: [aspectData.aspectType, aspectData.aspect],
+		references: [aspectDefinitions.aspectType, aspectDefinitions.aspect],
+	}),
+}));
 
 export const aspectDefinitions = mysqlTable(
-  "aspect_definitions",
-  {
-    aspectType: varchar("aspect_type", { length: 2 }),
-    aspect: smallint("aspect"),
-    description: varchar("description", { length: 255 }),
-  }, (table) => {
-    return {
-      pk: primaryKey({ columns: [table.aspectType, table.aspect] }),
-      //pkWithCustomName: primaryKey({ name: 'id', columns: [table.aspectType, table.aspect] }),
-    };
-  }
+	"aspect_definitions",
+	{
+		aspectType: varchar("aspect_type", { length: 2 }),
+		aspect: smallint("aspect"),
+		description: varchar("description", { length: 255 }),
+	}, (table) => {
+		return {
+			pk: primaryKey({ name: 'id', columns: [table.aspectType, table.aspect] }),
+		};
+	}
 );
 
 export const aspectDefinitionsRelations = relations(aspectDefinitions, ({ many }) => ({
-  data: many(data),
-}));
-
-export const data = mysqlTable(
-  "data",
-  {
-    unit: varchar("unit", { length: 8 }),
-    year: smallint("year"),
-    semester: varchar("semester", { length: 4 }),
-    campus: varchar("campus", { length: 2 }),
-    aspectType: varchar("aspect_type", { length: 2 }),
-    aspect: smallint("aspect"),
-    strongAgree: smallint("strong_agree"),
-    agree: smallint("agree"),
-    neutral: smallint("neutral"),
-    disagree: smallint("disagree"),
-    strongDisagree: smallint("strong_disagree"),
-    mean: double("mean"),
-    median: double("median"),
-  }, (table) => {
-    return {
-      //pk: primaryKey({ columns: [table.unit, table.year, table.semester, table.campus, table.aspectType, table.aspect] }),
-      pkWithCustomName: primaryKey({ name: 'id', columns: [table.unit, table.year, table.semester, table.campus, table.aspectType, table.aspect] }),
-    };
-  }
-);
-
-export const dataRelations = relations(data, ({ one }) => ({
-  aspectDefinition: one(aspectDefinitions, {
-    fields: [data.aspectType, data.aspect],
-    references: [aspectDefinitions.aspectType, aspectDefinitions.aspect],
-  }),
+	aspectData: many(aspectData),
 }));

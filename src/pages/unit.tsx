@@ -27,6 +27,32 @@ export default function Home() {
 		}
 	]
 
+	const years = [
+		{
+			value: 2021,
+			label: "2021"
+		},
+		{
+			value: 2022,
+			label: "2022"
+		},
+		{
+			value: 2023,
+			label: "2023"
+		}
+	]
+
+	const semesters = [
+		{
+			value: "S1",
+			label: "S1"
+		},
+		{
+			value: "S2",
+			label: "S2"
+		}
+	]
+
 	const uniAspects = api.aspects.getOffering.useQuery({
 		unit: selectedUnit,
 		year: selectedYear,
@@ -77,6 +103,8 @@ export default function Home() {
 			<main className="flex min-h-screen flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center gap-12 px-4 py-16 w-full">
 					<Combobox defaultValue={selectedUnit} dataType="unit" data={units} callback={setSelectedUnit} />
+					<Combobox defaultValue={selectedYear} dataType="unit" data={years} callback={setSelectedYear} />
+					<Combobox defaultValue={selectedSemester} dataType="unit" data={semesters} callback={setSelectedSemester} />
 
 					<h1 className="text-3xl text-center">{selectedUnit} results</h1>
 					

@@ -12,14 +12,23 @@ interface IGithubButtonProps {
 }
 
 export default function GithubButton(props: IGithubButtonProps) {
-	const [repo, setRepo] = React.useState<any>(null);
+	const [repoMessage, setRepoMessage] = React.useState<string>(null!);
 	React.useEffect(() => {
-		fetch(`https://api.github.com/repos/${props.repo}`)
-			.then(res => res.json())
-			.then(data => setRepo(data));
-	}, []);
+		interface IGitHubResponse {
+			message?: string;
+		}
 
-	if(!repo || repo.message == "Not Found") {
+		async function fetchData() {
+			await fetch(`https://api.github.com/repos/${props.repo}`)
+			.then(res => res.json() as Promise<IGitHubResponse>)
+			.then(data => setRepoMessage(data?.message ?? "Not Found"))
+			.catch(() => setRepoMessage("Not Found"));
+		}
+
+		void fetchData();
+	}, [props.repo]);
+
+	if(!repoMessage || repoMessage == "Not Found") {
 		return null;
 	}
 

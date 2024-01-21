@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea, ResponsiveContainer, Label } from 'recharts';
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, ReferenceArea, ResponsiveContainer } from 'recharts';
 import type { RouterOutputs } from "~/utils/api";
 import CustomTooltip, { refAreas } from "./CustomTooltip";
 

@@ -19,19 +19,19 @@ interface IGithubButtonProps {
 
 export default function GithubButton(props: IGithubButtonProps) {
 	const [repoResponse, setRepoResponse] = React.useState<IGitHubResponse>(null!);
-	
+
 	React.useEffect(() => {
 		async function fetchData() {
 			await fetch(`https://api.github.com/repos/${props.repo}`)
-			.then(res => res.json() as Promise<IGitHubResponse>)
-			.then(data => setRepoResponse(data))
-			.catch(() => setRepoResponse({ message: "Not Found" }));
+				.then(res => res.json() as Promise<IGitHubResponse>)
+				.then(data => setRepoResponse(data))
+				.catch(() => setRepoResponse({ message: "Not Found" }));
 		}
 
 		void fetchData();
 	}, [props.repo]);
 
-	if(!repoResponse || repoResponse.message == "Not Found") {
+	if (!repoResponse || repoResponse.message == "Not Found") {
 		return null;
 	}
 
@@ -39,12 +39,14 @@ export default function GithubButton(props: IGithubButtonProps) {
 		<Link href={`https://github.com/${props.repo}`} target="_blank">
 			<Button variant="outline" size="icon" className="flex flex-row gap-2 w-auto p-3">
 				<GitHubLogoIcon className="h-[1.2rem] w-[1.2rem]" />
-				
-				{props.showStars && <span className="flex flex-row gap-1 items-center justify-center">
-					{repoResponse.stargazers_count}
-					<StarFilledIcon className="h-[0.8rem] w-[0.8rem]" />
-				</span>}
-				
+
+				{props.showStars && repoResponse.stargazers_count && (
+					<span className="flex flex-row gap-1 items-center justify-center">
+						<span>{repoResponse.stargazers_count}</span>
+						<StarFilledIcon className="h-[0.8rem] w-[0.8rem]" />
+					</span>
+				)}
+
 				<span className="sr-only">Github</span>
 			</Button>
 		</Link>

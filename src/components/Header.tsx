@@ -20,7 +20,7 @@ export default function Header(props: IHeaderProps) {
 			</Link>
 
 			<div className="flex flex-row gap-2">
-				<GithubButton />
+				<GithubButton repo="MaximSrour/setu-visualiser" />
 				<ThemeToggle />
 			</div>
 		</header>

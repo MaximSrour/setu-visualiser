@@ -10,7 +10,10 @@ import Header from "~/components/Header";
 export default function Home() {
 	const router = useRouter();
 
-	const selectedUnit = router.query.unit ? router.query.unit as string : "FIT1045";
+	const selectedUnit = router.query.unit ? router.query.unit as string : "";
+
+	const isQueryValid = selectedUnit != "";
+	const htmlTitleText = isQueryValid ? `${selectedUnit}` as string : "Loading";
 
 	const aspectOverTime = api.aspects.getAspectsOverTime.useQuery({
 		unit: selectedUnit,
@@ -20,7 +23,7 @@ export default function Home() {
 	return (
 		<>
 			<Head>
-				<title>SETU Visualiser</title>
+				<title>{`SETU Visualiser - ${htmlTitleText}`}</title>
 				<meta name="description" content="Visualiser for Monash SETU data" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>

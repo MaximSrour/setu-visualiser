@@ -11,13 +11,13 @@ export interface IRefArea {
 export const refAreas: IRefArea[] = [
 	{ min: 0, max: 3, color: "red", description: "Needing critical attention" },
 	{ min: 3, max: 3.8, color: "yellow", description: "Needing improvement" },
-	{ min: 3.8, max: 4.8, color: "green", description: "Meeting requirements" },
-	{ min: 4.8, max: 5, color: "purple", description: "Exceeding requirements" },
+	{ min: 3.8, max: 4.7, color: "green", description: "Meeting requirements" },
+	{ min: 4.7, max: 6, color: "purple", description: "Exceeding requirements" },
 ];
 
 export function getRefArea(value: number): IRefArea | null {
 	for (const refArea of refAreas) {
-		if (refArea.min <= value && refArea.max >= value) {
+		if (refArea.min <= value && refArea.max > value) {
 			return refArea;
 		}
 	}

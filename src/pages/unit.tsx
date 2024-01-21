@@ -14,7 +14,7 @@ import Header from "~/components/Header";
 export default function Home() {
 	const [selectedUnit, setSelectedUnit] = useState("");
 	const [selectedYear, setSelectedYear] = useState(2023);
-	const [selectedSemester, setSelectedSemester] = useState("S2");
+	const [selectedSemester, setSelectedSemester] = useState("");
 
 	const units = [
 		{
@@ -29,26 +29,26 @@ export default function Home() {
 
 	const years = [
 		{
-			value: 2021,
+			value: "2021",
 			label: "2021"
 		},
 		{
-			value: 2022,
+			value: "2022",
 			label: "2022"
 		},
 		{
-			value: 2023,
+			value: "2023",
 			label: "2023"
 		}
 	]
 
 	const semesters = [
 		{
-			value: "S1",
+			value: "s1",
 			label: "S1"
 		},
 		{
-			value: "S2",
+			value: "s2",
 			label: "S2"
 		}
 	]
@@ -102,9 +102,11 @@ export default function Home() {
 
 			<main className="flex min-h-screen flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-center gap-12 px-4 py-16 w-full">
-					<Combobox defaultValue={selectedUnit} dataType="unit" data={units} callback={setSelectedUnit} />
-					<Combobox defaultValue={selectedYear} dataType="unit" data={years} callback={setSelectedYear} />
-					<Combobox defaultValue={selectedSemester} dataType="unit" data={semesters} callback={setSelectedSemester} />
+					<div className="flex flex-col gap-2">
+						<Combobox defaultValue={selectedUnit} dataType="unit" data={units} callback={setSelectedUnit} />
+						<Combobox defaultValue={selectedYear.toString()} dataType="year" data={years} callback={(year) => {setSelectedYear(parseInt(year))}} />
+						<Combobox defaultValue={selectedSemester} dataType="semester" data={semesters} callback={setSelectedSemester} />
+					</div>
 
 					<h1 className="text-3xl text-center">{selectedUnit} results</h1>
 					

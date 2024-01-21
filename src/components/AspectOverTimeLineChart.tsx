@@ -42,16 +42,20 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 
 	// const xticks = filteredData?.map((d) => `${d.year} - ${d.semester}`) ?? [];
 
+	const height = 300;
+
 	return (
-		<div className="flex flex-col items-center justify-center gap-2 w-full ">
+		<div className="flex flex-col items-center justify-center gap-2 w-full relative">
 			<div className="flex items-center justify-center min-h-14 align-middle">
 				<h3 className="text-lg text-center">{title}</h3>
 			</div>
 
-			<ResponsiveContainer width="100%" height={300}>
+			{!isEnoughData && <div className={`absolute w-full h-[${height}px] flex flex-col items-center justify-center z-50`} ><p>Not enough data</p></div>}
+
+			<ResponsiveContainer width="100%" height={height}>
 				<LineChart
 					width={600}
-					height={300}
+					height={height}
 					data={filteredData ?? []}
 					margin={{
 						top: 5,
@@ -66,7 +70,6 @@ export default function AspectOverTimeLineChart(props: IAspectOverTimeLineChartP
 					<Tooltip content={<CustomTooltip />} />
 					<Legend />
 					
-					{!isEnoughData && <Label value="Not enough data" position="center" />}
 					{isEnoughData && <Line type="monotone" dataKey="median" stroke="#8884d8" dot={true} />}
 					{/* <Line type="monotone" dataKey="mean" stroke="#d88488" dot={true} /> */}
 

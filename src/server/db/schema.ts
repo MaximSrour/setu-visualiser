@@ -23,13 +23,14 @@ export const offerings = mysqlTable(
 	{
 		unit: varchar("unit", { length: 8 }),
 		year: smallint("year"),
-		semester: varchar("semester", { length: 4 }),
+		semester: varchar("semester", { length: 16 }),
 		campus: varchar("campus", { length: 2 }),
+		mode: varchar("mode", { length: 32 }),
 		title: varchar("title", { length: 255 }),
 		ceEmail: varchar("ce_email", { length: 127 }),
 	}, (table) => {
 		return {
-			pk: primaryKey({ name: 'id', columns: [table.unit, table.year, table.semester, table.campus] }),
+			pk: primaryKey({ name: 'id', columns: [table.unit, table.year, table.semester, table.campus, table.mode] }),
 		};
 	}
 );
@@ -43,8 +44,9 @@ export const aspectData = mysqlTable(
 	{
 		unit: varchar("unit", { length: 8 }),
 		year: smallint("year"),
-		semester: varchar("semester", { length: 4 }),
+		semester: varchar("semester", { length: 16 }),
 		campus: varchar("campus", { length: 2 }),
+		mode: varchar("mode", { length: 32 }),
 		aspectType: varchar("aspect_type", { length: 2 }),
 		aspect: smallint("aspect"),
 		strongAgree: smallint("strong_agree"),
@@ -56,15 +58,15 @@ export const aspectData = mysqlTable(
 		median: double("median"),
 	}, (table) => {
 		return {
-			pk: primaryKey({ name: 'id', columns: [table.unit, table.year, table.semester, table.campus, table.aspectType, table.aspect] }),
+			pk: primaryKey({ name: 'id', columns: [table.unit, table.year, table.semester, table.campus, table.mode, table.aspectType, table.aspect] }),
 		};
 	}
 );
 
 export const aspectDataRelations = relations(aspectData, ({ one }) => ({
 	offering: one(offerings, {
-		fields: [aspectData.unit, aspectData.year, aspectData.semester, aspectData.campus],
-		references: [offerings.unit, offerings.year, offerings.semester, offerings.campus],
+		fields: [aspectData.unit, aspectData.year, aspectData.semester, aspectData.campus, aspectData.mode],
+		references: [offerings.unit, offerings.year, offerings.semester, offerings.campus, offerings.mode],
 	}),
 	aspectDefinition: one(aspectDefinitions, {
 		fields: [aspectData.aspectType, aspectData.aspect],

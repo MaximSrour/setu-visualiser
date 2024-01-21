@@ -13,7 +13,7 @@ export default function Home() {
 	const selectedUnit = router.query.unit ? router.query.unit as string : "";
 
 	const isQueryValid = selectedUnit != "";
-	const htmlTitleText = isQueryValid ? `${selectedUnit}` as string : "Loading";
+	const htmlTitleText = isQueryValid ? `${selectedUnit}` : "Loading";
 
 	const aspectOverTime = api.aspects.getAspectsOverTime.useQuery({
 		unit: selectedUnit,

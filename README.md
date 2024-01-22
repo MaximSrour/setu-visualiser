@@ -1,28 +1,23 @@
-# Create T3 App
+# SETU Visualiser
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is a website that is used to visualise Monash University SETU results. The standard method supplied by Monash University is limited in its usability, as it is only possible to view a specific offering in a PDF-like format. This website changes this and allows you to view any offering or unit performance at a glance, making it far easier to compare past performance to the current day.
 
-## What's next? How do I make an app with this?
+It is still a work in progress, and new features are being added every week.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## How to use
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+If you are inclined to use this repo on a locally hosted machine, the follow these steps to get it running.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+```sh
+git clone git@github.com:MaximSrour/setu-visualiser.git
+cd setu-visualiser
+pnpm i
+cp .env.example .env
+pnpm run dev
+```
 
-## Learn More
+Prior to running your server, you will need to supply database credentials in the .env file. The easiest way to get this up and running is to use [PlanetScale](https://planetscale.com/) and to create a new database. As this repo uses Drizzle-ORM as the DB driver, you can use a single database with multiple Drizzle projects to avoid paying for additional DBs. If you wish to use a different DB solution, you will need to figure this out for yourself.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+Once completed, you can now run the dev server.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+To deploy, the easiest way would be to host on [Vercel](https://vercel.com/).

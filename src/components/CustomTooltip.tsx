@@ -36,11 +36,14 @@ export default function CustomTooltip({
 }: TooltipProps<number, string>) {
 	if (active && payload?.length) {
 		const value = payload[0]?.value;
+		const timeframe =
+			(payload[0]?.payload as { timeframe: string }).timeframe ?? "";
 		const refArea = getRefArea(value ?? 0);
 
 		return (
 			<div className="rounded-md bg-slate-800 p-3">
 				<p className="text-white">{`${value}`}</p>
+				<p className="text-white">{`${timeframe}`}</p>
 				{refArea?.color == "red" && (
 					<p className="text-red-700">{refArea?.description}</p>
 				)}

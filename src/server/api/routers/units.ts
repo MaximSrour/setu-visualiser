@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { offerings } from "~/server/db/schema";
 
-import { like } from "drizzle-orm";
+import { like, or } from "drizzle-orm";
 
 export const unitRouter = createTRPCRouter({
 	getUnits: publicProcedure
@@ -21,7 +21,12 @@ export const unitRouter = createTRPCRouter({
 					title: offerings.title,
 				})
 				.from(offerings)
-				.where(like(offerings.unit, `%${input.search ?? ""}%`))
+				.where(
+					or(
+						like(offerings.unit, `%${input.search ?? ""}%`),
+						like(offerings.title, `%${input.search ?? ""}%`),
+					),
+				)
 				.limit(input.limit)
 				.offset(input.offset);
 		}),
@@ -39,7 +44,12 @@ export const unitRouter = createTRPCRouter({
 					title: offerings.title,
 				})
 				.from(offerings)
-				.where(like(offerings.unit, `%${input.search ?? ""}%`));
+				.where(
+					or(
+						like(offerings.unit, `%${input.search ?? ""}%`),
+						like(offerings.title, `%${input.search ?? ""}%`),
+					),
+				);
 
 			return count?.length ?? 0;
 		}),

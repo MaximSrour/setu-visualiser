@@ -36,7 +36,7 @@ function CustomizedAxisTick(props: {
 				dy={16}
 				textAnchor="end"
 				fill="#666"
-				transform="rotate(-35)"
+				transform="rotate(-20)"
 			>
 				{props?.payload?.value ?? ""}
 			</text>
@@ -47,11 +47,17 @@ function CustomizedAxisTick(props: {
 export default function AspectOverTimeLineChart(
 	props: IAspectOverTimeLineChartProps,
 ) {
-	const filteredData = props.data?.filter((d) => {
-		if (props.aspectType && d.aspectType !== props.aspectType) return false;
-		if (props.aspect && d.aspect !== props.aspect) return false;
-		return true;
-	});
+	const filteredData = props.data
+		?.filter((d) => {
+			if (props.aspectType && d.aspectType !== props.aspectType)
+				return false;
+			if (props.aspect && d.aspect !== props.aspect) return false;
+			return true;
+		})
+		.map((d) => ({
+			...d,
+			timeframe: `${d.year}-${d.semester}`,
+		}));
 
 	const domain = props.domain ?? [2.5, 5];
 
@@ -96,7 +102,7 @@ export default function AspectOverTimeLineChart(
 					}}
 				>
 					<CartesianGrid horizontal={false} strokeDasharray="1 4" />
-					<XAxis dataKey="semester" tick={<CustomizedAxisTick />} />
+					<XAxis dataKey="timeframe" tick={<CustomizedAxisTick />} />
 					<YAxis domain={domain} hide />
 					<Tooltip content={<CustomTooltip />} />
 					<Legend />
@@ -116,16 +122,8 @@ export default function AspectOverTimeLineChart(
 							key={key}
 							x1={0}
 							x2={dataCount - 1}
-							y1={
-								refArea.min >= domain[0]
-									? refArea.min
-									: domain[0]
-							}
-							y2={
-								refArea.max <= domain[1]
-									? refArea.max
-									: domain[1]
-							}
+							y1={refArea.min}
+							y2={refArea.max}
 							stroke={refArea.color}
 							strokeOpacity={1.0}
 							fill={refArea.color}

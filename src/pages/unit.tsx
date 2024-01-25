@@ -8,7 +8,7 @@ import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 
 import { Input } from "~/components/ui/input";
-import { Card } from "~/components/ui/card";
+import { Button } from "~/components/ui/button";
 
 import {
 	Pagination,
@@ -23,19 +23,19 @@ import {
 export default function Home() {
 	const router = useRouter();
 
-	const selectedUnit = router.query.unit as string;
+	const search = router.query.unit as string;
 	const selectedPage = Number(router.query.page) || 1;
 
-	const pageLimit = 10;
+	const pageLimit = 12;
 
 	const units = api.units.getUnits.useQuery({
-		search: selectedUnit,
+		search: search,
 		limit: pageLimit,
 		offset: selectedPage * pageLimit - pageLimit,
 	});
 
 	const unitCount = api.units.getUnitCount.useQuery({
-		search: selectedUnit,
+		search: search,
 	});
 
 	function generateArray(
@@ -44,15 +44,12 @@ export default function Home() {
 		spread: number,
 		selected: number,
 	): number[] {
-		// Calculate the start of the array
 		let start = Math.max(min, selected - Math.floor(spread / 2));
 
-		// If the start + spread would exceed the max, adjust the start
 		if (start + spread > max) {
 			start = max - spread + 1;
 		}
 
-		// Generate the array
 		return Array.from({ length: spread }, (_, i) => start + i);
 	}
 
@@ -74,7 +71,7 @@ export default function Home() {
 					<Input
 						className="w-48"
 						type="text"
-						placeholder="Unitcode"
+						placeholder="Search units"
 						onChange={(e) => {
 							async function fetchData() {
 								await router.push({
@@ -92,18 +89,27 @@ export default function Home() {
 
 							void fetchData();
 						}}
-						value={selectedUnit}
+						value={search}
 					/>
 
-					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
+					<div className="grid max-w-5xl grid-cols-1 gap-2 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
 						{units.data?.map((unit, key) => (
-							<Link key={key} href={`/unit/${unit.unit}`}>
-								<Card className="gap-3 bg-white/10 p-4 text-white hover:bg-white/20">
+							<Link
+								key={key}
+								href={`/unit/${unit.unit}`}
+								className="w-full"
+							>
+								<Button
+									className="flex h-auto w-full flex-col gap-2 text-wrap"
+									variant="outline"
+								>
 									<h3 className="text-2xl font-bold">
 										{unit.unit}
 									</h3>
-									<div className="text-lg">{unit.title}</div>
-								</Card>
+									<div className="w-auto text-lg">
+										{unit.title}
+									</div>
+								</Button>
 							</Link>
 						))}
 					</div>
@@ -174,7 +180,7 @@ export default function Home() {
 							)}
 
 							{pages.includes(totalPages) ||
-							totalPages < 7 ? null : (
+							totalPages < 2 ? null : (
 								<PaginationItem>
 									<PaginationLink
 										replace

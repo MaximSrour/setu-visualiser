@@ -7,6 +7,7 @@ import { GeistSans } from "geist/font/sans";
 import "~/styles/globals.css";
 
 import { ThemeProvider } from "~/components/themeProvider";
+import { Toaster } from "~/components/ui/sonner";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
 	return (
@@ -19,6 +20,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 			<div className={GeistSans.className}>
 				<Component {...pageProps} />
 			</div>
+			<Toaster />
 		</ThemeProvider>
 	);
 };

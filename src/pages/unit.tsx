@@ -112,6 +112,7 @@ export default function Home() {
 						<PaginationContent>
 							<PaginationItem>
 								<PaginationPrevious
+									replace
 									href={{
 										pathname: router.pathname,
 										query: {
@@ -127,6 +128,7 @@ export default function Home() {
 
 							<PaginationItem>
 								<PaginationLink
+									replace
 									href={{
 										pathname: router.pathname,
 										query: {
@@ -149,6 +151,7 @@ export default function Home() {
 							{pages.map((page, key) => (
 								<PaginationItem key={key}>
 									<PaginationLink
+										replace
 										href={{
 											pathname: router.pathname,
 											query: {
@@ -174,6 +177,7 @@ export default function Home() {
 							totalPages < 7 ? null : (
 								<PaginationItem>
 									<PaginationLink
+										replace
 										href={{
 											pathname: router.pathname,
 											query: {
@@ -190,6 +194,7 @@ export default function Home() {
 
 							<PaginationItem>
 								<PaginationNext
+									replace
 									href={{
 										pathname: router.pathname,
 										query: {

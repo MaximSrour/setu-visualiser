@@ -122,8 +122,16 @@ export default function AspectOverTimeLineChart(
 							key={key}
 							x1={0}
 							x2={dataCount - 1}
-							y1={refArea.min}
-							y2={refArea.max}
+							y1={
+								refArea.min >= domain[0]
+									? refArea.min
+									: domain[0]
+							}
+							y2={
+								refArea.max <= domain[1]
+									? refArea.max
+									: domain[1]
+							}
 							stroke={refArea.color}
 							strokeOpacity={1.0}
 							fill={refArea.color}

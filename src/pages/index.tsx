@@ -1,19 +1,12 @@
-import Head from "next/head";
 import Link from "next/link";
 
+import CustomHead from "~/components/CustomHead";
 import Header from "~/components/Header";
 
 export default function Home() {
 	return (
 		<>
-			<Head>
-				<title>SETU Visualiser</title>
-				<meta
-					name="description"
-					content="Visualiser for Monash SETU data"
-				/>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
+			<CustomHead />
 
 			<Header />
 

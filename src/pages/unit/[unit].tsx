@@ -1,10 +1,10 @@
-import Head from "next/head";
 import { useRouter } from "next/router";
 
 import AspectOverTimeLineChart from "~/components/AspectOverTimeLineChart";
 
 import { api } from "~/utils/api";
 
+import CustomHead from "~/components/CustomHead";
 import Header from "~/components/Header";
 
 export default function Home() {
@@ -22,14 +22,7 @@ export default function Home() {
 
 	return (
 		<>
-			<Head>
-				<title>{`SETU Visualiser - ${htmlTitleText}`}</title>
-				<meta
-					name="description"
-					content="Visualiser for Monash SETU data"
-				/>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
+			<CustomHead subtitle={htmlTitleText} />
 
 			<Header />
 

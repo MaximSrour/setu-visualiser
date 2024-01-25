@@ -1,5 +1,6 @@
 import { aspectRouter } from "~/server/api/routers/aspects";
 import { offeringRouter } from "~/server/api/routers/offerings";
+import { unitRouter } from "~/server/api/routers/units";
 
 import { createTRPCRouter } from "~/server/api/trpc";
 
@@ -11,6 +12,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
 export const appRouter = createTRPCRouter({
 	aspects: aspectRouter,
 	offerings: offeringRouter,
+	units: unitRouter,
 });
 
 // export type definition of API

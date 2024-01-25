@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useState } from "react";
 
 import OfferingsAspectRadarChart from "~/components/OfferingsAspectRadarChart";
@@ -9,6 +8,7 @@ import { api } from "~/utils/api";
 
 import { Combobox } from "~/components/ui/combobox";
 
+import CustomHead from "~/components/CustomHead";
 import Header from "~/components/Header";
 
 export default function Home() {
@@ -92,14 +92,7 @@ export default function Home() {
 
 	return (
 		<>
-			<Head>
-				<title>SETU Visualiser</title>
-				<meta
-					name="description"
-					content="Visualiser for Monash SETU data"
-				/>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
+			<CustomHead subtitle="Old" />
 
 			<Header />
 

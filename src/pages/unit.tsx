@@ -99,10 +99,7 @@ export default function Home() {
 								href={`/unit/${unit.unit}`}
 								className="w-full"
 							>
-								<Button
-									className="flex h-auto w-full flex-col gap-2 text-wrap"
-									variant="outline"
-								>
+								<Button variant="outline" size="card">
 									<h3 className="text-2xl font-bold">
 										{unit.unit}
 									</h3>

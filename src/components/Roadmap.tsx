@@ -54,7 +54,7 @@ export interface IRoadmapSectionProps {
 
 export function RoadmapComplete(props: IRoadmapSectionProps) {
 	return (
-		<section>
+		<section className="w-full">
 			<h2 className="text-2xl font-bold text-green-600">
 				Already Delivered
 			</h2>
@@ -66,7 +66,7 @@ export function RoadmapComplete(props: IRoadmapSectionProps) {
 
 export function RoadmapInProgress(props: IRoadmapSectionProps) {
 	return (
-		<section>
+		<section className="w-full">
 			<h2 className="text-2xl font-bold text-yellow-600">Coming Soon</h2>
 
 			<div className="mt-4 grid gap-4">{props.children}</div>
@@ -76,39 +76,12 @@ export function RoadmapInProgress(props: IRoadmapSectionProps) {
 
 export function RoadmapPlanned(props: IRoadmapSectionProps) {
 	return (
-		<section>
+		<section className="w-full">
 			<h2 className="text-2xl font-bold text-blue-600">
 				Planned for Later
 			</h2>
 
 			<div className="mt-4 grid gap-4">{props.children}</div>
 		</section>
-	);
-}
-
-export default function Roadmap() {
-	return (
-		<div className="flex flex-col gap-8 p-8">
-			<RoadmapComplete>
-				<RoadmapCompleteCard
-					title="Unit listing"
-					description="The navigable list of all units offered by the university."
-				/>
-			</RoadmapComplete>
-
-			<RoadmapInProgress>
-				<RoadmapInProgressCard
-					title="Offering listing"
-					description="The navigable list of all unit offerings at the university."
-				/>
-			</RoadmapInProgress>
-
-			<RoadmapPlanned>
-				<RoadmapPlannedCard
-					title="Integration with the Handbook"
-					description="Connect handbook information to the site such as chief examiners and future offerings."
-				/>
-			</RoadmapPlanned>
-		</div>
 	);
 }

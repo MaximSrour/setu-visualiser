@@ -71,9 +71,9 @@ export default function AspectOverTimeLineChart(
 
 	const isEnoughData = dataCount >= 3;
 
-	// const xticks = filteredData?.map((d) => `${d.year} - ${d.semester}`) ?? [];
-
 	const height = 300;
+
+	// const xticks = filteredData?.map((d) => `${d.year} - ${d.semester}`) ?? [];
 
 	return (
 		<div className="relative flex w-full flex-col items-center justify-center gap-2">
@@ -120,18 +120,8 @@ export default function AspectOverTimeLineChart(
 					{refAreas.map((refArea, key) => (
 						<ReferenceArea
 							key={key}
-							x1={0}
-							x2={dataCount - 1}
-							y1={
-								refArea.min >= domain[0]
-									? refArea.min
-									: domain[0]
-							}
-							y2={
-								refArea.max <= domain[1]
-									? refArea.max
-									: domain[1]
-							}
+							y1={refArea.min}
+							y2={refArea.max}
 							stroke={refArea.color}
 							strokeOpacity={1.0}
 							fill={refArea.color}

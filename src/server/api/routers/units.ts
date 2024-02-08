@@ -3,10 +3,10 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { offerings } from "~/server/db/schema";
 
-import { like, or } from "drizzle-orm";
+import { eq, like, and, or, not } from "drizzle-orm";
 
 export const unitRouter = createTRPCRouter({
-	getUnits: publicProcedure
+	getAll: publicProcedure
 		.input(
 			z.object({
 				search: z.string().optional(),
@@ -22,16 +22,19 @@ export const unitRouter = createTRPCRouter({
 				})
 				.from(offerings)
 				.where(
-					or(
-						like(offerings.unit, `%${input.search ?? ""}%`),
-						like(offerings.title, `%${input.search ?? ""}%`),
+					and(
+						not(eq(offerings.title, "")),
+						or(
+							like(offerings.unit, `%${input.search ?? ""}%`),
+							like(offerings.title, `%${input.search ?? ""}%`),
+						),
 					),
 				)
 				.limit(input.limit)
 				.offset(input.offset);
 		}),
 
-	getUnitCount: publicProcedure
+	getCount: publicProcedure
 		.input(
 			z.object({
 				search: z.string().optional(),
@@ -45,9 +48,12 @@ export const unitRouter = createTRPCRouter({
 				})
 				.from(offerings)
 				.where(
-					or(
-						like(offerings.unit, `%${input.search ?? ""}%`),
-						like(offerings.title, `%${input.search ?? ""}%`),
+					and(
+						not(eq(offerings.title, "")),
+						or(
+							like(offerings.unit, `%${input.search ?? ""}%`),
+							like(offerings.title, `%${input.search ?? ""}%`),
+						),
 					),
 				);
 

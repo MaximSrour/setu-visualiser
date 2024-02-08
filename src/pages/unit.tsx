@@ -23,18 +23,18 @@ import {
 export default function Home() {
 	const router = useRouter();
 
-	const search = router.query.unit as string;
+	const search = router.query.search as string;
 	const selectedPage = Number(router.query.page) || 1;
 
 	const pageLimit = 12;
 
-	const units = api.units.getUnits.useQuery({
+	const units = api.units.getAll.useQuery({
 		search: search,
 		limit: pageLimit,
 		offset: selectedPage * pageLimit - pageLimit,
 	});
 
-	const unitCount = api.units.getUnitCount.useQuery({
+	const unitCount = api.units.getCount.useQuery({
 		search: search,
 	});
 
@@ -72,13 +72,14 @@ export default function Home() {
 						className="w-48"
 						type="text"
 						placeholder="Search units"
+						defaultValue={search}
 						onChange={(e) => {
 							async function fetchData() {
-								await router.push({
+								await router.replace({
 									pathname: router.pathname,
 									query: {
 										...router.query,
-										unit: e.target.value,
+										search: e.target.value,
 										page: Math.min(
 											selectedPage,
 											totalPages,
@@ -89,7 +90,6 @@ export default function Home() {
 
 							void fetchData();
 						}}
-						defaultValue={search}
 					/>
 
 					<div className="grid max-w-5xl grid-cols-1 gap-2 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
@@ -103,9 +103,9 @@ export default function Home() {
 									<h3 className="text-2xl font-bold">
 										{unit.unit}
 									</h3>
-									<div className="w-auto text-lg">
+									<h4 className="w-auto text-lg">
 										{unit.title}
-									</div>
+									</h4>
 								</Button>
 							</Link>
 						))}

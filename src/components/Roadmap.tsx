@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { CardTitle, CardDescription, Card } from "~/components/ui/card";
 import {

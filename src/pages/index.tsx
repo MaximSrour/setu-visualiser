@@ -66,13 +66,13 @@ export default function Home() {
 								title="Unit listing"
 								description="The navigable list of all units offered by the university."
 							/>
-						</RoadmapComplete>
-
-						<RoadmapInProgress>
-							<RoadmapInProgressCard
+							<RoadmapCompleteCard
 								title="Offering listing"
 								description="The navigable list of all unit offerings at the university."
 							/>
+						</RoadmapComplete>
+
+						<RoadmapInProgress>
 							<RoadmapInProgressCard
 								title="Unit visualisations"
 								description="A comprehensive unit dashboard with visualisations of unit performance."
@@ -87,6 +87,10 @@ export default function Home() {
 							<RoadmapPlannedCard
 								title="Faculty visualisations"
 								description="Breakdown of each faculty and their unit performance as a whole."
+							/>
+							<RoadmapPlannedCard
+								title="Campus/Country visualisations"
+								description="Breakdown of each campus and country and their unit performance as a whole."
 							/>
 							<RoadmapPlannedCard
 								title="Integration with the Handbook"

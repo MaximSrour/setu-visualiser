@@ -17,9 +17,17 @@ export default function Home() {
 	const selectedSemester = router.query.semester
 		? (router.query.semester as string)
 		: "";
+	const selectedCampus = router.query.campus
+		? (router.query.campus as string)
+		: "";
+	const selectedMode = router.query.mode ? (router.query.mode as string) : "";
 
 	const isQueryValid =
-		selectedUnit != "" && selectedYear != -1 && selectedSemester != "";
+		selectedUnit != "" &&
+		selectedYear != -1 &&
+		selectedSemester != "" &&
+		selectedCampus != "" &&
+		selectedMode != "";
 	const htmlTitleText = isQueryValid
 		? `${selectedYear} ${selectedSemester} ${selectedUnit}`
 		: "Loading";
@@ -28,7 +36,8 @@ export default function Home() {
 		unit: selectedUnit,
 		year: selectedYear,
 		semester: selectedSemester,
-		campus: "CL",
+		campus: selectedCampus,
+		mode: selectedMode,
 		aspectType: "U",
 	});
 
@@ -36,7 +45,8 @@ export default function Home() {
 		unit: selectedUnit,
 		year: selectedYear,
 		semester: selectedSemester,
-		campus: "CL",
+		campus: selectedCampus,
+		mode: selectedMode,
 		aspectType: "F",
 	});
 
@@ -51,6 +61,11 @@ export default function Home() {
 					<h1 className="text-center text-3xl">
 						{selectedUnit} results
 					</h1>
+
+					<p className="text-lg">
+						{selectedYear} - {selectedSemester} - {selectedCampus}
+					</p>
+					<p className="text-lg">{selectedMode}</p>
 
 					<div className="flex flex-row flex-wrap items-center justify-center">
 						<OfferingsAspectRadarChart data={uniAspects.data} />

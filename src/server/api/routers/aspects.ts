@@ -10,6 +10,7 @@ export const aspectRouter = createTRPCRouter({
 				year: z.number(),
 				semester: z.string(),
 				campus: z.string(),
+				mode: z.string(),
 				aspectType: z.string(),
 			}),
 		)
@@ -21,6 +22,7 @@ export const aspectRouter = createTRPCRouter({
 						eq(aspectData.year, input.year),
 						eq(aspectData.semester, input.semester),
 						eq(aspectData.campus, input.campus),
+						eq(aspectData.mode, input.mode),
 						eq(aspectData.aspectType, input.aspectType),
 					),
 				with: {

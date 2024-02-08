@@ -5,12 +5,10 @@ import Header from "~/components/Header";
 
 import { Button } from "~/components/ui/button";
 import {
+	RoadmapCard,
 	RoadmapComplete,
-	RoadmapCompleteCard,
 	RoadmapInProgress,
-	RoadmapInProgressCard,
 	RoadmapPlanned,
-	RoadmapPlannedCard,
 } from "~/components/Roadmap";
 
 export default function Home() {
@@ -62,37 +60,45 @@ export default function Home() {
 						<h2 className="w-fit text-3xl font-bold">Roadmap</h2>
 
 						<RoadmapComplete>
-							<RoadmapCompleteCard
+							<RoadmapCard
 								title="Unit listing"
 								description="The navigable list of all units offered by the university."
 							/>
-							<RoadmapCompleteCard
+							<RoadmapCard
 								title="Offering listing"
 								description="The navigable list of all unit offerings at the university."
 							/>
 						</RoadmapComplete>
 
 						<RoadmapInProgress>
-							<RoadmapInProgressCard
+							<RoadmapCard
 								title="Unit visualisations"
 								description="A comprehensive unit dashboard with visualisations of unit performance."
 							/>
-							<RoadmapInProgressCard
+							<RoadmapCard
 								title="Offering visualisations"
 								description="A comprehensive dashboard for each unit offering."
 							/>
 						</RoadmapInProgress>
 
 						<RoadmapPlanned>
-							<RoadmapPlannedCard
+							<RoadmapCard
 								title="Faculty visualisations"
 								description="Breakdown of each faculty and their unit performance as a whole."
 							/>
-							<RoadmapPlannedCard
+							<RoadmapCard
 								title="Campus/Country visualisations"
 								description="Breakdown of each campus and country and their unit performance as a whole."
 							/>
-							<RoadmapPlannedCard
+							<RoadmapCard
+								title="Overall performance visualisations"
+								description="Generalised visualisations of unit performance across the university."
+							/>
+							<RoadmapCard
+								title="User preferences"
+								description="Select units and offerings to watch for future."
+							/>
+							<RoadmapCard
 								title="Integration with the Handbook"
 								description="Connect handbook information to the site such as chief examiners and future offerings."
 							/>

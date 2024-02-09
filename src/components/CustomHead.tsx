@@ -8,7 +8,7 @@ export default function CustomHead(props: IHeadProps) {
 	return (
 		<Head>
 			<title>SETU Visualiser</title>
-			<title>{`SETU Visualiser - ${props.subtitle}`}</title>
+			{/* <title>{`SETU Visualiser - ${props.subtitle}`}</title> */}
 			<meta
 				name="description"
 				content="Visualiser for Monash SETU data"

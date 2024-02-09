@@ -101,11 +101,7 @@ export default function AspectOverTimeLineChart(
 
 		type DynamicObject<Keys extends string[]> = {
 			timeframe: string;
-		} & {
-			[K in Keys[number]]: number;
-		} & {
-			[key: string]: any;
-		};
+		} & Record<Keys[number], number>;
 
 		function createObject<Keys extends string[], Values extends number[]>(
 			timeframe: string,
@@ -118,16 +114,14 @@ export default function AspectOverTimeLineChart(
 
 			for (let i = 0; i < keys.length; i++) {
 				const key = keys[i] as keyof DynamicObject<Keys>;
-				const value = values[i] as number;
+				const value = values[i]!;
 
-				if (!key || !value) {
-					continue;
-				}
-
-				result[key] = value;
+				// TODO: Fix this so that it doesn't rely on the linter being bypassed
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+				(result as any)[key] = value;
 			}
 
-			return result as DynamicObject<Keys>;
+			return result;
 		}
 
 		const obj1 = createObject(key, offeringType, medians);

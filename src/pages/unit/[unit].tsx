@@ -65,7 +65,10 @@ export default function Home() {
 								router.query.select?.includes(type) ?? false;
 
 							return (
-								<div key={key} className="flex flex-row gap-2">
+								<div
+									key={key}
+									className="flex flex-row items-center gap-2 align-middle"
+								>
 									<Switch
 										id={type}
 										checked={checked}

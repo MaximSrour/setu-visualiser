@@ -110,11 +110,19 @@ export default function AspectOverTimeLineChart(
 			keys: Keys,
 			values: Values,
 		): DynamicObject<Keys> {
-			const result: Partial<DynamicObject<Keys>> = { timeframe };
+			const result: DynamicObject<Keys> = {
+				timeframe,
+			} as DynamicObject<Keys>;
 
 			for (let i = 0; i < keys.length; i++) {
 				const key = keys[i];
 				const value = values[i];
+
+				if (!key || !value) {
+					continue;
+				}
+
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				result[key] = value;
 			}
 

@@ -19,6 +19,7 @@ interface IAspectOverTimeLineChartProps {
 	aspect?: number;
 	domain?: [number, number];
 	data?: IOffering[] | null;
+	selectedCampusMode?: string[];
 }
 
 // TODO: Fix this so that it doesn't rely on the linter being bypassed
@@ -47,29 +48,107 @@ function CustomizedAxisTick(props: {
 export default function AspectOverTimeLineChart(
 	props: IAspectOverTimeLineChartProps,
 ) {
-	const filteredData = props.data
-		?.filter((d) => {
-			if (props.aspectType && d.aspectType !== props.aspectType)
-				return false;
-			if (props.aspect && d.aspect !== props.aspect) return false;
-			return true;
-		})
-		.map((d) => ({
+	const lineColorPalette = [
+		"#8884d8",
+		"#82ca9d",
+		"#d88488",
+		"#d8ca88",
+		"#d888ca",
+		"#88d8ca",
+		"#88cad8",
+		"#d8d888",
+	];
+
+	const filteredData = props.data?.filter((d) => {
+		if (props.aspectType && d.aspectType !== props.aspectType) return false;
+		if (props.aspect && d.aspect !== props.aspect) return false;
+		return true;
+	});
+
+	const longData = filteredData
+		?.map((d) => ({
 			...d,
 			timeframe: `${d.year}-${d.semester}`,
-		}));
+			uniqueType: `${d.campus}_${d.mode}`,
+		}))
+		.reduce(
+			(acc: Record<string, IOffering[]>, cur: IOffering) => {
+				const key = `${cur.year}-${cur.semester}`;
+				if (!acc[key]) {
+					acc[key] = [];
+				}
+
+				acc[key]?.push(cur);
+
+				return acc;
+			},
+			{} as Record<string, IOffering[]>,
+		);
+
+	if (!longData) {
+		return null;
+	}
+
+	const wideData = [];
+	for (const key in longData) {
+		const offeringType = longData[key]?.map((o) => `${o.campus}_${o.mode}`);
+		const medians = longData[key]?.map((o) => o.median ?? 0);
+
+		const offerings = longData[key];
+		if (!offerings || !offeringType || !medians) {
+			continue;
+		}
+
+		type DynamicObject<Keys extends string[]> = {
+			timeframe: string;
+		} & {
+			[K in Keys[number]]: number;
+		};
+
+		function createObject<Keys extends string[], Values extends number[]>(
+			timeframe: string,
+			keys: Keys,
+			values: Values,
+		): DynamicObject<Keys> {
+			const result: Partial<DynamicObject<Keys>> = { timeframe };
+
+			for (let i = 0; i < keys.length; i++) {
+				const key = keys[i];
+				const value = values[i];
+				result[key] = value;
+			}
+
+			return result as DynamicObject<Keys>;
+		}
+
+		const obj1 = createObject(key, offeringType, medians);
+
+		wideData.push(obj1);
+	}
+
+	const uniqueTypes = new Set<string>();
+	for (const key in longData) {
+		const offerings = longData[key];
+		if (!offerings) {
+			continue;
+		}
+
+		for (const offering of offerings) {
+			uniqueTypes.add(`${offering.campus}_${offering.mode}`);
+		}
+	}
 
 	const domain = props.domain ?? [2.5, 5];
 
 	const opacity = 0.4;
 
-	const dataCount = filteredData?.length ?? 0;
-
 	const title = filteredData
 		? filteredData[0]?.aspectDefinition?.description
 		: "Loading...";
 
-	const isEnoughData = dataCount >= 3;
+	//const dataCount = longData?.length ?? 0;
+	//const isEnoughData = dataCount >= 3 ?? true;
+	const isEnoughData = true;
 
 	const height = 300;
 
@@ -93,7 +172,7 @@ export default function AspectOverTimeLineChart(
 				<LineChart
 					width={600}
 					height={height}
-					data={filteredData ?? []}
+					data={wideData ?? []}
 					margin={{
 						top: 5,
 						right: 5,
@@ -107,14 +186,31 @@ export default function AspectOverTimeLineChart(
 					<Tooltip content={<CustomTooltip />} />
 					<Legend />
 
-					{isEnoughData && (
-						<Line
-							type="monotone"
-							dataKey="median"
-							stroke="#8884d8"
-							dot={true}
-						/>
-					)}
+					{isEnoughData &&
+						Array.from(uniqueTypes).map((value, index) => {
+							if (!props.selectedCampusMode) {
+								return null;
+							}
+
+							if (
+								props.selectedCampusMode.length > 0 &&
+								!props.selectedCampusMode.includes(value)
+							) {
+								return null;
+							}
+
+							return (
+								<Line
+									key={value}
+									type="monotone"
+									dataKey={value}
+									stroke={lineColorPalette[index] ?? "ff0000"}
+									dot={true}
+									connectNulls
+								/>
+							);
+						})}
+
 					{/* <Line type="monotone" dataKey="mean" stroke="#d88488" dot={true} /> */}
 
 					{refAreas.map((refArea, key) => (

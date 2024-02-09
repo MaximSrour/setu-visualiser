@@ -7,6 +7,9 @@ import { api } from "~/utils/api";
 import CustomHead from "~/components/CustomHead";
 import Header from "~/components/Header";
 
+import { Label } from "~/components/ui/label";
+import { Switch } from "~/components/ui/switch";
+
 export default function Home() {
 	const router = useRouter();
 
@@ -17,8 +20,32 @@ export default function Home() {
 
 	const aspectOverTime = api.aspects.getAspectsOverTime.useQuery({
 		unit: selectedUnit,
-		campus: "CL",
 	});
+
+	const uniqueTypes = new Set<string>();
+	for (const offering of aspectOverTime.data ?? []) {
+		uniqueTypes.add(`${offering.campus}_${offering.mode}`);
+	}
+
+	const selectedTypes = Array.from(uniqueTypes).filter((type) =>
+		router.query.select?.includes(type),
+	);
+
+	const handleClick = (type: string, checked: boolean) => {
+		async function fetchData() {
+			await router.replace({
+				pathname: router.pathname,
+				query: {
+					...router.query,
+					select: checked
+						? selectedTypes.filter((t) => t !== type)
+						: [...selectedTypes, type],
+				},
+			});
+		}
+
+		void fetchData();
+	};
 
 	return (
 		<>
@@ -32,6 +59,26 @@ export default function Home() {
 						{selectedUnit} results
 					</h1>
 
+					<div className="flex flex-col gap-2">
+						{Array.from(uniqueTypes).map((type, key) => {
+							const checked =
+								router.query.select?.includes(type) ?? false;
+
+							return (
+								<div key={key} className="flex flex-row gap-2">
+									<Switch
+										id={type}
+										checked={checked}
+										onClick={() =>
+											handleClick(type, checked)
+										}
+									/>
+									<Label htmlFor={type}>{type}</Label>
+								</div>
+							);
+						})}
+					</div>
+
 					<div className="flex w-full flex-col items-center justify-center gap-8">
 						<h2 className="text-center text-2xl">
 							University-wide Aspects
@@ -44,6 +91,7 @@ export default function Home() {
 									aspectType="U"
 									aspect={aspect}
 									data={aspectOverTime.data}
+									selectedCampusMode={selectedTypes}
 								/>
 							))}
 						</div>
@@ -61,6 +109,7 @@ export default function Home() {
 									aspectType="F"
 									aspect={aspect}
 									data={aspectOverTime.data}
+									selectedCampusMode={selectedTypes}
 								/>
 							))}
 						</div>

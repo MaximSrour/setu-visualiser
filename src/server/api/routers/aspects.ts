@@ -63,16 +63,12 @@ export const aspectRouter = createTRPCRouter({
 		.input(
 			z.object({
 				unit: z.string(),
-				campus: z.string(),
 			}),
 		)
 		.query(async ({ ctx, input }) => {
 			return await ctx.db.query.aspectData.findMany({
 				where: (aspectData, { and, eq }) =>
-					and(
-						eq(aspectData.unit, input.unit),
-						eq(aspectData.campus, input.campus),
-					),
+					and(eq(aspectData.unit, input.unit)),
 				orderBy: (aspectData, { asc }) => [
 					asc(aspectData.year),
 					asc(aspectData.semester),

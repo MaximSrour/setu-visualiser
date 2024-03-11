@@ -86,7 +86,7 @@ export function RoadmapComplete(props: IRoadmapSectionProps) {
 export function RoadmapInProgress(props: IRoadmapSectionProps) {
 	return (
 		<section className="w-full">
-			<h2 className="text-2xl font-bold text-yellow-600">Coming Soon</h2>
+			<h2 className="text-2xl font-bold text-yellow-600">In Progress</h2>
 
 			<div className="mt-4 grid gap-4">
 				{React.Children.map(props.children, (child) =>

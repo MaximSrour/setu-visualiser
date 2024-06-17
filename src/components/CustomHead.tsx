@@ -1,10 +1,6 @@
 import Head from "next/head";
 
-interface IHeadProps {
-	subtitle?: string;
-}
-
-export default function CustomHead(props: IHeadProps) {
+export default function CustomHead() {
 	return (
 		<Head>
 			<title>SETU Visualiser</title>
